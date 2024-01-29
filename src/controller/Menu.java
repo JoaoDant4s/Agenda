@@ -46,6 +46,18 @@ public class Menu {
     public void editContactMenu(){
 
     }
+
+    public void deleteContactMenu(){
+        System.out.println(">>>> Deletar Contato <<<<");
+        System.out.print("Digite o ID do contato que quer remover: ");
+        long id = scan.nextLong();
+        try{
+            contactService.deleteContact(id);
+            System.out.println("Contato deletado com sucesso");
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
     public void printMainMenu(){
         System.out.println(">>>> Menu <<<<");
         for (MenuOptions option : MenuOptions.values()) {
@@ -66,12 +78,8 @@ public class Menu {
             switch (option){
                 case ADICIONAR_CONTATO -> newContactMenu();
                 case LISTAR_CONTATOS -> listAgenda();
-                case REMOVER_CONTATO -> {
-
-                }
-                case EDITAR_CONTATO -> {
-
-                }
+                case REMOVER_CONTATO -> System.out.println("Tentei sobrescrever o arquivo instanciando outro writer com o append false mas tá apagando o .txt inteiro quando encerro o programa");
+                case EDITAR_CONTATO -> System.out.println("Not implemented yet");
                 case SAIR -> {
                     toContinue = false;
                     System.out.println("Sessão encerrada");

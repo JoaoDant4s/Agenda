@@ -12,6 +12,7 @@ public class Main {
             toContinue = menu.mainMenu();
         }
         menu.closeScanner();
-        Writer.getInstance().closeWrites();
+        Writer.getInstance().closeWriters();
+        Reader.getInstance().closeReaders();
     }
 }

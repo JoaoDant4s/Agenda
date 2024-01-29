@@ -2,15 +2,11 @@ package service;
 
 import model.Contact;
 import model.Phone;
-import repository.ContactRepository;
-
-import java.util.Arrays;
 import java.util.List;
 
 public class PhoneService {
     private static PhoneService instance = null;
-    private PhoneService(){
-    }
+    private PhoneService(){}
     public Phone validate(String number, int id, List<Contact> listContacts) throws Exception {
         String[] numberSplited = number.split(" ");
         String ddd = numberSplited[0];
@@ -36,7 +32,6 @@ public class PhoneService {
     }
 
     public boolean phoneAlreadyExists(String ddd, long telNumber, List<Contact> listContacts) throws Exception {
-        System.out.println("joao tels: " + listContacts.get(1).getPhones());
         for(Contact contact : listContacts){
             for(Phone phone : contact.getPhones()){
                 if(ddd.equals(phone.getDdd()) && telNumber == phone.getNumber()) return true;

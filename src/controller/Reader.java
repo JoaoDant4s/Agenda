@@ -40,13 +40,6 @@ public class Reader {
             throw new Exception("Erro ao ler arquivo: " + e.getMessage());
         }
     }
-
-    public File getFile() {
-        return file;
-    }
-    public BufferedReader getBufferedReader() {
-        return bufferedReader;
-    }
     public void closeReaders(){
         try{
             bufferedReader.close();

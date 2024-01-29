@@ -45,6 +45,14 @@ public class ContactService {
         }
     }
 
+    public void deleteContact(long id) throws Exception {
+        List<Contact> contacts = contactRepository.getContactList();
+        if(contacts.isEmpty()) throw new Exception("Não há contatos para deletar");
+        Contact contact = contactRepository.deleteContactById(id);
+        contacts.remove(contact);
+        contactRepository.subscribeDataBase(contacts);
+    }
+
     public void listAllContact() throws Exception {
         List<String> data = contactRepository.getData();
         Contact contact;
