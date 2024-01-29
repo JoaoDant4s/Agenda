@@ -2,6 +2,7 @@ package repository;
 import controller.Reader;
 import controller.Writer;
 import model.Contact;
+import model.Phone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,25 +10,33 @@ import java.util.List;
 public class ContactRepository {
     private static ContactRepository instance = null;
     private List<Contact> contacts = new ArrayList<>();
-    private final Reader reader;
-    private final Writer writer;
-    private ContactRepository() {
-        reader = Reader.initializeReader();
-        assert reader !=  null;
-        writer = Writer.initializeWriter(reader.getFile());
+    private Reader reader = null;
+    private Writer writer = null;
+    private ContactRepository() throws Exception {
+        try{
+            this.reader = Reader.initializeReader();
+            this.writer = Writer.getInstance();
+        } catch (Exception e){
+            throw new Exception("Ocorreu um erro ao tentar instanciar o ContactRepository: " + e.getMessage());
+        }
     }
-    public static ContactRepository getInstance(){
+    public static ContactRepository getInstance() throws Exception {
         if(instance == null){
             instance = new ContactRepository();
         }
         return instance;
     }
-    public void saveContact(Contact contact){
-        System.out.println(reader == null);
-        System.out.println(writer == null);
-        System.out.println(contact == null);
+    public void saveContact(Contact contact) throws Exception {
         contacts.add(contact);
-        writer.saveContact(contact);
+        try {
+            StringBuilder data = new StringBuilder(contact.getId() + "|" + contact.getName() + "|" + contact.getLastName() + "|");
+            for(Phone phone : contact.getPhones()){
+                data.append(phone.getId()).append(",").append(phone.getDdd()).append(" ").append(phone.getNumber());
+            }
+            writer.saveContact(data.toString());
+        } catch (Exception e){
+            throw e;
+        }
     }
 
 }

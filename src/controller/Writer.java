@@ -1,51 +1,25 @@
 package controller;
-
-import model.Contact;
-import model.Phone;
-
 import java.io.*;
 
 public class Writer {
     private static Writer instance = null;
+    private final File file;
     private final FileWriter fileWriter;
-
     private final BufferedWriter bufferedWriter;
 
-    private Writer(FileWriter fileWriter, BufferedWriter bufferedWriter){
-        this.fileWriter = fileWriter;
-        this.bufferedWriter = bufferedWriter;
+    private Writer() throws IOException {
+        this.file = new File("db.txt");
+        if(!this.file.exists()){
+            this.file.createNewFile();
+        }
+        this.fileWriter = new FileWriter(file, true);
+        this.bufferedWriter = new BufferedWriter(fileWriter);
     }
-
-    private static Writer getInstance(FileWriter fileWriter, BufferedWriter bufferedWriter){
+    public static Writer getInstance() throws IOException {
         if(instance == null){
-            instance = new Writer(fileWriter, bufferedWriter);
+            instance = new Writer();
         }
         return instance;
-    }
-
-    public void saveContact(Contact contact){
-        try{
-            StringBuilder data = new StringBuilder(contact.getId() + "|" + contact.getName() + contact.getLastName() + "|");
-            for(Phone phone : contact.getPhones()){
-                data.append(phone.getId()).append(",").append(phone.getDdd()).append(" ").append(phone.getNumber()).append("|");
-            }
-            bufferedWriter.write("TESTEEEE");
-            bufferedWriter.write(1);
-            bufferedWriter.append("teste");
-            bufferedWriter.newLine();
-        } catch(Exception e){
-            System.out.println("Erro ao registrar um contato: " + e.getMessage());
-        }
-    }
-    public static Writer initializeWriter(File file){
-        try{
-            FileWriter fileWriter = new FileWriter(file, true);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            return Writer.getInstance(fileWriter, bufferedWriter);
-        } catch (Exception e){
-            System.out.println("Erro ao inicializar o escritor de arquivos: " + e.getMessage());
-        }
-        return null;
     }
     public void closeWrites(){
         try{
@@ -54,6 +28,15 @@ public class Writer {
             instance = null;
         } catch(Exception e){
             System.out.println("Erro ao desalocar o escritor de arquivos" + e.getMessage());
+        }
+    }
+
+    public void saveContact(String data) throws Exception {
+        try{
+            bufferedWriter.write(data);
+            bufferedWriter.newLine();
+        } catch(Exception e){
+            throw new Exception("Erro ao registrar um contato");
         }
     }
 }

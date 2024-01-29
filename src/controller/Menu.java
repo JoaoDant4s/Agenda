@@ -8,30 +8,34 @@ import java.util.Scanner;
 
 public class Menu {
     private final Scanner scan;
-    private final ContactService contactService;
+    private ContactService contactService = null;
     public Menu(){
         this.scan = new Scanner(System.in);
-        this.contactService = new ContactService();
+        try{
+            this.contactService = new ContactService();
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
     public void newContactMenu(){
         System.out.println(">>>>Adicionar Contato<<<<");
         System.out.print("Digite o nome: ");
         scan.nextLine();
         String name = scan.nextLine();
-        System.out.print("\nDigite o sobrenome: ");
+        System.out.print("Digite o sobrenome: ");
         String lastName = scan.nextLine();
-        System.out.print("\nQuantos números o contato possui? ");
+        System.out.print("Quantos números o contato possui? ");
         int qntNumbers = scan.nextInt();
         scan.nextLine();
         List<String> numbers = new ArrayList<>();
         for(int i = 1; i <= qntNumbers; i++){
-            System.out.printf("\nDigite o %d° número: ", i);
+            System.out.printf("Digite o %d° número: ", i);
             String number = scan.nextLine();
             numbers.add(number);
         }
         try{
             contactService.newContact(name, lastName, numbers);
-            System.out.println("Contato salvo com sucesso");
+            System.out.println("\nContato salvo com sucesso\n");
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
@@ -51,13 +55,13 @@ public class Menu {
     public boolean mainMenu() throws Exception {
         printMainMenu();
         boolean toContinue = true;
+        System.out.print("Sua escolha: ");
         int choose = scan.nextInt();
         MenuOptions option = MenuOptions.getMenuOption(choose);
         if(option == null){
             unknownOption();
             return toContinue;
         }
-        System.out.println(option.getValue());
         try{
             switch (option){
                 case ADICIONAR_CONTATO -> newContactMenu();

@@ -31,7 +31,7 @@ public class Reader {
     }
 
     public static Reader initializeReader(){
-        File file = new File("db.txt");
+        File file = new File("E:\\santander-coders-2023\\logica-programacao-I\\projeto\\db.txt");
         try{
             if(!file.exists()){
                 file.createNewFile();
