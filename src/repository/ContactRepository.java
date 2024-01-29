@@ -14,7 +14,7 @@ public class ContactRepository {
     private Writer writer = null;
     private ContactRepository() throws Exception {
         try{
-            this.reader = Reader.initializeReader();
+            this.reader = Reader.getInstance();
             this.writer = Writer.getInstance();
         } catch (Exception e){
             throw new Exception("Ocorreu um erro ao tentar instanciar o ContactRepository: " + e.getMessage());
@@ -39,4 +39,16 @@ public class ContactRepository {
         }
     }
 
+    public List<String> getData() throws Exception {
+        return reader.readDataFile();
+    }
+    public void addContact(Contact contact){
+        this.contacts.add(contact);
+    }
+    public List<Contact> getContactList(){
+        return this.contacts;
+    }
+    public void setLastId(long lastId){
+        Contact.setIdIncrementer(lastId);
+    }
 }

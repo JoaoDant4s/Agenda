@@ -8,17 +8,13 @@ import java.util.Scanner;
 
 public class Menu {
     private final Scanner scan;
-    private ContactService contactService = null;
-    public Menu(){
+    private ContactService contactService;
+    public Menu() throws Exception {
         this.scan = new Scanner(System.in);
-        try{
-            this.contactService = new ContactService();
-        } catch(Exception e){
-            System.out.println(e.getMessage());
-        }
+        this.contactService = ContactService.getInstance();
     }
     public void newContactMenu(){
-        System.out.println(">>>>Adicionar Contato<<<<");
+        System.out.println(">>>> Adicionar Contato <<<<");
         System.out.print("Digite o nome: ");
         scan.nextLine();
         String name = scan.nextLine();
@@ -37,11 +33,15 @@ public class Menu {
             contactService.newContact(name, lastName, numbers);
             System.out.println("\nContato salvo com sucesso\n");
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            System.err.println("Erro: " + e.getMessage());
         }
     }
     public void listAgenda(){
-
+        try{
+            contactService.printAllContacts();
+        } catch(Exception e){
+            System.out.println("Erro ao listar contatos: " + e.getMessage());
+        }
     }
     public void editContactMenu(){
 
@@ -65,6 +65,7 @@ public class Menu {
         try{
             switch (option){
                 case ADICIONAR_CONTATO -> newContactMenu();
+                case LISTAR_CONTATOS -> listAgenda();
                 case REMOVER_CONTATO -> {
 
                 }

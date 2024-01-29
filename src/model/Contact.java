@@ -3,7 +3,7 @@ package model;
 import java.util.List;
 
 public class Contact {
-    private static long idIncrementer;
+    private static long idIncrementer = 0;
     private final long id;
     private String name;
     private String lastName;
@@ -16,6 +16,13 @@ public class Contact {
         this.phones = phones;
         idIncrementer++;
     }
+    public Contact(long id, String name, String lastName, List<Phone> phones){
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.phones = phones;
+    }
+
     public Long getId() {
         return id;
     }
@@ -36,5 +43,8 @@ public class Contact {
     }
     public List<Phone> getPhones() {
         return phones;
+    }
+    public static void setIdIncrementer(long lastId){
+        Contact.idIncrementer = lastId;
     }
 }

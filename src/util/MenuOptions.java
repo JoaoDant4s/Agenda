@@ -2,9 +2,10 @@ package util;
 
 public enum MenuOptions {
     ADICIONAR_CONTATO(1, "Adicionar Contato"),
-    REMOVER_CONTATO(2, "Remover Contato"),
-    EDITAR_CONTATO(3, "Editar Contato"),
-    SAIR(4, "Sair");
+    LISTAR_CONTATOS(2, "Listar Contatos"),
+    REMOVER_CONTATO(3, "Remover Contato"),
+    EDITAR_CONTATO(4, "Editar Contato"),
+    SAIR(5, "Sair");
     private final int value;
     private final String description;
 

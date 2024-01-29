@@ -3,6 +3,9 @@ package controller;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Reader {
     private static Reader instance = null;
@@ -10,10 +13,32 @@ public class Reader {
     private final FileReader fileReader;
     private final BufferedReader bufferedReader;
 
-    private Reader(File file, FileReader fileReader, BufferedReader bufferedReader){
-        this.file = file;
-        this.fileReader = fileReader;
-        this.bufferedReader = bufferedReader;
+    private Reader() throws IOException {
+        this.file = new File("db.txt");
+        if(!this.file.exists()){
+            this.file.createNewFile();
+        }
+        this.fileReader = new FileReader(file);
+        this.bufferedReader = new BufferedReader(fileReader);
+    }
+
+    public static Reader getInstance() throws IOException {
+        if(instance == null){
+            instance = new Reader();
+        }
+        return instance;
+    }
+
+    public List<String> readDataFile() throws Exception {
+        try{
+            List<String> data = new ArrayList<>();
+            while (bufferedReader.ready()){
+                data.add(bufferedReader.readLine());
+            }
+            return data;
+        } catch (Exception e){
+            throw new Exception("Erro ao ler arquivo: " + e.getMessage());
+        }
     }
 
     public File getFile() {
@@ -21,28 +46,6 @@ public class Reader {
     }
     public BufferedReader getBufferedReader() {
         return bufferedReader;
-    }
-
-    private static Reader getInstance(File file, FileReader readerFile, BufferedReader readerBuffer){
-        if(instance == null){
-            instance = new Reader(file, readerFile, readerBuffer);
-        }
-        return instance;
-    }
-
-    public static Reader initializeReader(){
-        File file = new File("E:\\santander-coders-2023\\logica-programacao-I\\projeto\\db.txt");
-        try{
-            if(!file.exists()){
-                file.createNewFile();
-            }
-            FileReader readerFile = new FileReader(file);
-            BufferedReader readerBuffer = new BufferedReader(readerFile);
-            return Reader.getInstance(file, readerFile, readerBuffer);
-        } catch (Exception e){
-            System.out.println("Erro ao inicializar o leitor de arquivos: " + e.getMessage());
-        }
-        return null;
     }
     public void closeReaders(){
         try{
